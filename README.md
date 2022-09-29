@@ -1,7 +1,7 @@
 # WMF_RNAseq_1
-Road map and documentation of RNA-seq analysis of 1 hybrid (Hayden) and 1 Eurasian Watermilfoil  (CDA E) genotype 
+Road map and documentation of RNA-seq analysis of one hybrid (from Hayden Lake, Idaho) and one Eurasian Watermilfoil (from Couer D'Alene Lake, Idaho) genotype 
 
-Initial steps were run on a Linux-based high performance computing cluster at Montana State University. This cluster uses a SLURM job management system. Files run this way have ".sbatch" file extensions.
+Initial steps were run on a Linux-based high performance computing cluster at Montana State University. This cluster uses a SLURM job management system. Files run this way have ".sbatch" file extensions. The rest of the files are R scripts.
 
 "bbadaptertrim.sbatch" = Remove adapters from raw reads with BBduk.
 
@@ -9,18 +9,20 @@ Initial steps were run on a Linux-based high performance computing cluster at Mo
 
 "fastqc.sbatch" = Quality check of cleaned reads.
 
-"salmonindex.sbatch" = Index a Trinity assembled transcriptome for Salmon to align experimental too.
+"salmonindex.sbatch" = Index the Trinity assembled transcriptome (see WMF_DeNovoTranscriptome) for Salmon to align experimental too.
 
 "salmonalign.sbatch" = Align experimental reads to Trinity reference with Salmon. The output from this alignment are quantification files for each experimental sample used in this study.
 
-The following analyses were don in R.
+The following analyses were done in R.
 
-4. Import quantification files from Salmon into R using TXimport
-5. Make DGE in edgeR 
-6. Analyze DE using edgeR
-7. Enrichment analysis using GOseq
-8. Venn diagrams with VennDetail
-9. Heatmaps
+"TxImport.R" = An R script that moves Salmon quantification files into R and aggregates them into gene counts using TXimport package.
 
+"edgeR_Contrasts.R" = An R script that uses edgeR to calculate a full model and set contrasts for differential expression of genes. 
 
-Published at:  
+"GoseEnrichment.R" = An R script for enrichment analysis using the GOseq package and to determine shared differentially expressed genes and plot the numbers in venn diagrams with the VennDetail package.
+
+DEcompare.R =  An R script that aggregates all log-fold-change files and constructs heatmaps of Gene Ontology terms of interest using the PHeatmaps package.
+
+DoseResponse.R = An R script for calculating dose response models using the drc package.
+
+Manuscript published at: 
