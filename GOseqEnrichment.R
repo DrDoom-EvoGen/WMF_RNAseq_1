@@ -1201,17 +1201,23 @@ H12_enriched.GO <- H12_enriched.GO %>%
 
 GO.12 <- bind_rows(E12_enriched.GO, H12_enriched.GO)
 
+GO.12.compare <- E12_enriched.GO %>%
+  full_join(H12_enriched.GO, by = 'category', copy = TRUE, suffix = c("",".H12"))
+
+write_csv(GO.12.compare, "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/GO.12.enrichment.csv")
+
 GO.12 %>%
     arrange(desc(over_represented_pvalue)) %>%
     na.omit() %>%
     ggplot(aes(x = fct_inorder(term), y = genotype)) + 
     geom_point(aes(color = over_represented_pvalue, size = numDEInCat/numInCat, group = ontology), alpha = 1) + 
     scale_color_gradient(low = "blue", high = "red", na.value = NA) +
-    scale_x_discrete(label = function(x) stringr::str_trunc(x, 40)) +
+    scale_x_discrete(label = function(x) stringr::str_trunc(x, 40))+
     labs(x = "", y = "", color = "P-value", size = "ratio of DE to catalog") +
-    theme(axis.text.y = element_text(size = 5)) +
+    theme(axis.text.y = element_text(size = 5), axis.text.x = element_text(size = 0)) +
     coord_flip() +
     facet_grid(rows = vars(ontology), scale = "free", space = "free")
+
 
 ggsave("GO.12.pdf",
   plot = last_plot(),
@@ -1274,6 +1280,12 @@ H24_enriched.GO <- H24_enriched.GO %>%
 
 GO.24 <- bind_rows(E24_enriched.GO, H24_enriched.GO)
 
+
+GO.24.compare <- E24_enriched.GO %>%
+  full_join(H24_enriched.GO, by = 'category', copy = TRUE, suffix = c("",".H24"))
+
+write_csv(GO.24.compare, "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/GO.24.enrichment.csv")
+
 GO.24 %>%
     arrange(desc(over_represented_pvalue)) %>%
     na.omit() %>%
@@ -1304,6 +1316,12 @@ H48_enriched.GO <- H48_enriched.GO %>%
 
 GO.48 <- bind_rows(E48_enriched.GO, H48_enriched.GO)
 
+
+GO.48.compare <- E48_enriched.GO %>%
+  full_join(H48_enriched.GO, by = 'category', copy = TRUE, suffix = c("",".H48"))
+
+write_csv(GO.48.compare, "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/GO.48.enrichment.csv")
+
 GO.48 %>%
     arrange(desc(over_represented_pvalue)) %>%
     na.omit() %>%
@@ -1332,6 +1350,13 @@ H96_enriched.GO <- H96_enriched.GO %>%
   mutate(genotype = "H96")
 
 GO.96 <- bind_rows(E96_enriched.GO, H96_enriched.GO)
+
+
+
+GO.96.compare <- E96_enriched.GO %>%
+  full_join(H96_enriched.GO, by = 'category', copy = TRUE, suffix = c("",".H96"))
+
+write_csv(GO.96.compare, "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/GO.96.enrichment.csv")
 
 GO.96 %>%
     arrange(desc(over_represented_pvalue)) %>%
@@ -1395,17 +1420,17 @@ plot(H_ven)
 dev.off()
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/Ven12.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
-plot(ven12)
+    width = 24, # The width of the plot in inches
+    height = 24) # The height of the plot in inches
+plot(ven12, col = c("white", "Gray"), cex = 0.5)
 dev.off()
 
 shared12 <- ven12[0:sum(ven12$Subset=="Shared"),2]
 write_csv(as.data.frame(shared12), "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/shared_12.csv")
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/Ven24.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
+    width = 24, # The width of the plot in inches
+    height = 24) # The height of the plot in inches
 plot(ven24)
 dev.off()
 
@@ -1413,8 +1438,8 @@ shared24 <- ven24[0:sum(ven24$Subset=="Shared"),2]
 write_csv(as.data.frame(shared24), "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/shared_24.csv")
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/Ven48.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
+    width = 24, # The width of the plot in inches
+    height = 24) # The height of the plot in inches
 plot(ven48)
 dev.off()
 
@@ -1422,8 +1447,8 @@ shared48 <- ven48[0:sum(ven48$Subset=="Shared"),2]
 write_csv(as.data.frame(shared48), "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/shared_48.csv")
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/Ven96.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
-    height = 4) # The height of the plot in inches
+    width = 24, # The width of the plot in inches
+    height = 24) # The height of the plot in inches
 plot(ven96)
 dev.off()
 
@@ -1492,7 +1517,23 @@ H96.sig <- H96_pwf %>% filter(DEgenes != 0)
 write.csv(H96.sig, "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/H96_sig.csv")
 
 
+# Redraw the Venn Diagrams made in VennDetail with modified text and color
+ven.12 <- draw.pairwise.venn(area1 = 322, area2 = 225, cross.area = 141, category = c("EWM","hybrid"), fill = c("white","grey"), ext.text = FALSE, cex = 3, cat.pos = c(335, 25), cat.cex = 2)
+grid.newpage()
+ven.24 <- draw.pairwise.venn(area1 = 2655, area2 = 570, cross.area = 449, category = c("EWM","hybrid"), fill = c("white","grey"), ext.text = FALSE, cex = 3, cat.pos = c(335, 25), cat.cex = 2)
+grid.newpage()
+ven.48 <- draw.pairwise.venn(area1 = 13146, area2 = 2455, cross.area = 1944, category = c("EWM","hybrid"), fill = c("white","grey"), ext.text = FALSE, cex = 3, cat.pos = c(335, 25), cat.cex = 2)
+grid.newpage()
+ven.96 <- draw.pairwise.venn(area1 = 7948, area2 = 2521, cross.area = 2054, category = c("EWM","hybrid"), fill = c("white","grey"), ext.text = FALSE, cex = 3, cat.pos = c(335, 25), cat.cex = 2)
 
+# Draw stacked bar graph of the total number of up- and downregulated genes
+ggplot(DEcounts_long, aes(fill = Direction, y = DEGs, x = Genotype)) + 
+    geom_bar(position = "stack", stat = "identity") + 
+    theme_minimal() + 
+    xlab("") +
+    facet_wrap(~HAT, strip.position = "bottom", scales = "free_x", ncol = 4) +
+    theme(text = element_text(size = 20)) +
+    theme(axis.text.x = element_text(size = 8))    
 
 
 

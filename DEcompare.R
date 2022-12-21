@@ -122,12 +122,12 @@ my.breaks <- c(seq(-12, -.01, by=0.1), seq(0, 12, by=0.1))
 my.colors <- c(colorRampPalette(colors = c("dark blue", "blue", "light blue", "white"))(length(my.breaks)/2), colorRampPalette(colors = c("white", "yellow", "orange", "red"))(length(my.breaks)/2))
 
 annotation_col = data.frame(
-                    Genotype = factor(c("EWM", "EWM", "EWM", "EWM", "HWM", "HWM", "HWM", "HWM", "EWM - HWM")))
+                    Genotype = factor(c("EWM", "EWM", "EWM", "EWM", "hybrid", "hybrid", "hybrid", "hybrid", "EWM - hybrid")))
 
 rownames(annotation_col) = c("logFC", "logFC.E24", "logFC.E48", "logFC.E96", "logFC.H12", "logFC.H24", "logFC.H48", "logFC.H96", "logFC.Control")
 
 ann_colors = list(
-    Genotype = c(EWM = "white", HWM = "grey", 'EWM - HWM' = "black"))
+    Genotype = c(EWM = "white", hybrid = "grey", 'EWM - hybrid' = "black"))
 
 ### Main Heatmaps
 
@@ -263,7 +263,7 @@ AuxEfflux.mtx <- as.matrix(subset(AuxEfflux_logFC, select = c(logFC, logFC.E24, 
 rownames(AuxEfflux.mtx) <- AuxEfflux_logFC$X
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxinEfflux.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
+    width = 7, # The width of the plot in inches
     height = 12) # The height of the plot in inches
 
 pheatmap(AuxEfflux.mtx, 
@@ -279,7 +279,138 @@ pheatmap(AuxEfflux.mtx,
          show_colnames = FALSE,
          show_rownames = FALSE,
          annotation_col = annotation_col,
-         main = "Auxin Efflux")
+         main = "Auxin Efflux GO:0010315")
+dev.off()
+
+
+## Auxin Transport
+AuxTrans <- gene_go %>% filter(gene_go$go_term == 'GO:0060918')
+AuxTrans_logFC <- subset(logFC, X %in% AuxTrans$gene_id)
+AuxTrans.mtx <- as.matrix(subset(AuxTrans_logFC, select = c(logFC, logFC.E24, logFC.E48, logFC.E96, logFC.H12, logFC.H24, logFC.H48, logFC.H96, logFC.Control)))
+rownames(AuxTrans.mtx) <- AuxTrans_logFC$X
+
+pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxinTransport.pdf",   # The directory you want to save the file in
+    width = 7, # The width of the plot in inches
+    height = 12) # The height of the plot in inches
+
+pheatmap(AuxTrans.mtx, 
+         cluster_cols = FALSE, 
+         cluster_rows = FALSE, 
+         scale = "none", 
+         breaks = my.breaks, 
+         color = my.colors, 
+         cellwidth = 15, 
+         cellheight = 3, 
+         fontsize_row = 3, 
+         fontsize = 8,
+         show_colnames = FALSE,
+         show_rownames = FALSE,
+         annotation_col = annotation_col,
+         main = "Auxin Transport GO:0060918")
+dev.off()
+
+## Hormone Transport
+HormoneTrans <- gene_go %>% filter(gene_go$go_term == 'GO:0009914')
+HormoneTrans_logFC <- subset(logFC, X %in% HormoneTrans$gene_id)
+HormoneTrans.mtx <- as.matrix(subset(HormoneTrans_logFC, select = c(logFC, logFC.E24, logFC.E48, logFC.E96, logFC.H12, logFC.H24, logFC.H48, logFC.H96, logFC.Control)))
+rownames(HormoneTrans.mtx) <- HormoneTrans_logFC$X
+
+pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/HormoneTransport.pdf",   # The directory you want to save the file in
+    width = 7, # The width of the plot in inches
+    height = 12) # The height of the plot in inches
+
+pheatmap(HormoneTrans.mtx, 
+         cluster_cols = FALSE, 
+         cluster_rows = FALSE, 
+         scale = "none", 
+         breaks = my.breaks, 
+         color = my.colors, 
+         cellwidth = 15, 
+         cellheight = 3, 
+         fontsize_row = 3, 
+         fontsize = 8,
+         show_colnames = FALSE,
+         show_rownames = FALSE,
+         annotation_col = annotation_col,
+         main = "Hormone Transport GO:0009914")
+dev.off()
+
+## regulation of auxin mediated signaling pathway
+AuxSigReg <- gene_go %>% filter(gene_go$go_term == 'GO:0010928')
+AuxSigReg_logFC <- subset(logFC, X %in% AuxSigReg$gene_id)
+AuxSigReg.mtx <- as.matrix(subset(AuxSigReg_logFC, select = c(logFC, logFC.E24, logFC.E48, logFC.E96, logFC.H12, logFC.H24, logFC.H48, logFC.H96, logFC.Control)))
+rownames(AuxSigReg.mtx) <- AuxSigReg_logFC$X
+
+pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxinSigRegulation.pdf",   # The directory you want to save the file in
+    width = 7, # The width of the plot in inches
+    height = 12) # The height of the plot in inches
+
+pheatmap(AuxSigReg.mtx, 
+         cluster_cols = FALSE, 
+         cluster_rows = FALSE, 
+         scale = "none", 
+         breaks = my.breaks, 
+         color = my.colors, 
+         cellwidth = 15, 
+         cellheight = 3, 
+         fontsize_row = 3, 
+         fontsize = 8,
+         show_colnames = FALSE,
+         show_rownames = FALSE,
+         annotation_col = annotation_col,
+         main = "regulation of auxin mediated signaling pathway GO:0010928")
+dev.off()
+
+## auxin transmembrane transporter activity
+AuxTransTrans <- gene_go %>% filter(gene_go$go_term == 'GO:0080161')
+AuxTransTrans_logFC <- subset(logFC, X %in% AuxTransTrans$gene_id)
+AuxTransTrans.mtx <- as.matrix(subset(AuxTransTrans_logFC, select = c(logFC, logFC.E24, logFC.E48, logFC.E96, logFC.H12, logFC.H24, logFC.H48, logFC.H96, logFC.Control)))
+rownames(AuxTransTrans.mtx) <- AuxTransTrans_logFC$X
+
+pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxTransTransporter.pdf",   # The directory you want to save the file in
+    width = 7, # The width of the plot in inches
+    height = 12) # The height of the plot in inches
+
+pheatmap(AuxTransTrans.mtx, 
+         cluster_cols = FALSE, 
+         cluster_rows = FALSE, 
+         scale = "none", 
+         breaks = my.breaks, 
+         color = my.colors, 
+         cellwidth = 15, 
+         cellheight = 3, 
+         fontsize_row = 3, 
+         fontsize = 8,
+         show_colnames = FALSE,
+         show_rownames = FALSE,
+         annotation_col = annotation_col,
+         main = "auxin transmembrane transporter activity GO:0080161")
+dev.off()
+
+## auxin efflux transmembrane transporter activity
+AuxEffluxTrans <- gene_go %>% filter(gene_go$go_term == 'GO:0010329')
+AuxEffluxTrans_logFC <- subset(logFC, X %in% AuxEffluxTrans$gene_id)
+AuxEffluxTrans.mtx <- as.matrix(subset(AuxEffluxTrans_logFC, select = c(logFC, logFC.E24, logFC.E48, logFC.E96, logFC.H12, logFC.H24, logFC.H48, logFC.H96, logFC.Control)))
+rownames(AuxEffluxTrans.mtx) <- AuxEffluxTrans_logFC$X
+
+pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxEffluxTransporter.pdf",   # The directory you want to save the file in
+    width = 7, # The width of the plot in inches
+    height = 12) # The height of the plot in inches
+
+pheatmap(AuxEffluxTrans.mtx, 
+         cluster_cols = FALSE, 
+         cluster_rows = FALSE, 
+         scale = "none", 
+         breaks = my.breaks, 
+         color = my.colors, 
+         cellwidth = 15, 
+         cellheight = 3, 
+         fontsize_row = 3, 
+         fontsize = 8,
+         show_colnames = FALSE,
+         show_rownames = FALSE,
+         annotation_col = annotation_col,
+         main = "auxin efflux transmembrane transporter activity GO:0010329")
 dev.off()
 
 ##Auxin activated signalling
@@ -289,7 +420,7 @@ HormoneSig.mtx <- as.matrix(subset(HormoneSig_logFC, select = c(logFC, logFC.E24
 rownames(HormoneSig.mtx) <- HormoneSig_logFC$X
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxinSignaling.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
+    width = 7, # The width of the plot in inches
     height = 12) # The height of the plot in inches
 
 pheatmap(HormoneSig.mtx, 
@@ -317,7 +448,7 @@ AuxStasis.mtx <- as.matrix(subset(AuxStasis_logFC, select = c(logFC, logFC.E24, 
 rownames(AuxStasis.mtx) <- AuxStasis_logFC$X
 
 pdf(file = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/AuxinHomeostasis.pdf",   # The directory you want to save the file in
-    width = 4, # The width of the plot in inches
+    width = 7, # The width of the plot in inches
     height = 12) # The height of the plot in inches
 
 pheatmap(AuxStasis.mtx, 
@@ -565,6 +696,23 @@ ggplot(abundance, aes(E_C_row_mean, H_C_row_mean)) +
     theme_classic()
 
 ggsave("Abundance_Corr_1000.pdf",
+  plot = last_plot(),
+  device = NULL,
+  path = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/",
+  scale = 1,
+  dpi = 600)
+
+ggplot(abundance, aes(log(E_C_row_mean), log(H_C_row_mean))) + 
+    geom_point() +
+    geom_point(data = abundance.sig, color = 'red', pch = 1) + 
+    geom_abline(slope = 1, intercept = 0) +
+    xlim(0,12) +
+    ylim(0,12) + 
+    xlab("log of EWM Mean Control Abundance") + 
+    ylab("log of hybrid Mean Control Abundance") +
+    theme_classic()
+
+ggsave("Abundance_Corr_log.pdf",
   plot = last_plot(),
   device = NULL,
   path = "/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/",

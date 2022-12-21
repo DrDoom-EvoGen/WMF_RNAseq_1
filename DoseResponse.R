@@ -38,7 +38,7 @@ plot(H_fixed2, main="LL.3(fixed=c(NA, 100, NA))")
 
 # Testing model fits
 H_model.LL3<- drm(percent_response ~ dose, data = H_DR, fct=LL.3(fixed=c(NA, 100, NA), names = c("Slope", "Upper Limit", "ED50")))
-mselect(H_model.LL3, fctList = list(W1.3(fixed=c(NA, 100, NA)),W1.4(), W2.3(fixed=c(NA, 100, NA)), W2.4(),  LL.4()),linreg=TRUE) 
+mselect(H_model.LL3, fctList = list(W1.3(fixed=c(NA, 100, NA)),W1.4(fixed=c(NA, NA, 100, NA)), W2.3(fixed=c(NA, 100, NA)), W2.4(fixed=c(NA, NA, 100, NA)),  LL.4(fixed=c(NA, NA, 100, NA))))
 
 
 H_model.W23 <-  drm(percent_response~dose, data=H_DR, fct=W2.3(fixed=c(NA, 100, NA), names = c("Slope", "Upper Limit",  "ED50")))
@@ -80,8 +80,11 @@ C_fixed2<- model_fixed<- drm(percent_response ~ dose, data = C_DR,
 plot(C_fixed2, main="LL.3(fixed=c(NA, 100, NA))")
 
 # Testing model fits
-C_model.LL3<- drm(percent_response ~ dose, data = C_DR, fct=LL.3(fixed=c(NA, 100, NA), names = c("Slope", "Upper Limit", "ED50")))
-mselect(C_model.LL3, fctList = list(W1.3(fixed=c(NA, 100, NA)),W1.4(), W2.3(fixed=c(NA, 100, NA)), W2.4(),  LL.4()),linreg=TRUE) 
+C_model.LL3 <- drm(percent_response ~ dose, data = C_DR, fct=LL.3(fixed=c(NA, 100, NA), names = c("Slope", "Upper Limit", "ED50")))
+mselect(C_model.LL3, fctList = list(W1.3(fixed=c(NA, 100, NA)),W1.4(fixed=c(NA, NA, 100, NA)), W2.3(fixed=c(NA, 100, NA)), W2.4(fixed=c(NA, NA, 100, NA)),  LL.4(fixed=c(NA, NA, 100, NA)))) 
+
+
+
 
 
 C_model.W23 <-  drm(percent_response~dose, data=C_DR, fct=W2.3(fixed=c(NA, 100, NA), names = c("Slope", "Upper Limit",  "ED50")))
@@ -100,15 +103,15 @@ plot(C_model.W14, add=TRUE,col="pink",lty=2, lwd=2)
 ## Both genotypes plotted together using their best fit model
 bmp(file="/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/DoseResponse.bmp",
     width=6, height=5, units="in", res=600)
-plot(C_model.LL3, xlab="mg/L-1 2,4-D", ylab="Percent Control Dry Weight (g)",lty=1, lwd=2, cex = 1.5)
-plot(H_model.W23, add=TRUE,col="black",lty=2, lwd=2, pch = 2, cex = 1.5)
-legend(0.7, 123, legend=c("EWM", "HWM"),
+plot(C_model.LL4, xlab="mg/L-1 2,4-D", ylab="Percent Control Dry Weight (g)",lty=1, lwd=2, cex = 1.5)
+plot(H_model.LL4, add=TRUE,col="black",lty=2, lwd=2, pch = 2, cex = 1.5)
+legend(0.7, 123, legend=c("EWM", "hybrid"),
        col=c("black", "black"), lty=1:2, pch = 1:2, cex=1)
 dev.off()
 
 # Calculate ED50 for the 2 genotypes
-ED(H_model.W23, 50, interval="delta")
-ED(C_model.LL3, 50, interval="delta")
+ED(H_model.LL4, 50, interval="delta")
+ED(C_model.LL4, 50, interval="delta")
 
 # Plot with confidence intervals and error bars
 bmp(file="/Users/Greg/Documents/GitHub/WMF_RNAseq_1/results/DoseResponse_AllPoints.bmp",
